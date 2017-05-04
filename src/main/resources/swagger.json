@@ -1,0 +1,2087 @@
+
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "2",
+		"title": "OpenDataKit 2.0 Tables Sync + Hamster API",
+		"contact": {
+			"name": "Caden Howell <cadenh@benetech.org>"
+		}
+	},
+	"tags": {
+		"name": "users"
+	},
+	"schemes": [
+		"http",
+		"https"
+	],
+	"paths": {
+		"/admin/users/username:{username}/password": {
+			"post": {
+				"tags": [
+					"adminusers"
+				],
+				"summary": "Set a password in cleartext.  Probably a good idea to disable this endpoint in production.",
+				"description": "",
+				"operationId": "setUserPassword",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"in": "body",
+					"name": "body",
+					"required": false,
+					"schema": {
+						"type": "string"
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/admin/users/username:{username}/password/digest": {
+			"post": {
+				"tags": [
+					"adminusers"
+				],
+				"summary": "Set a password using digest hash.",
+				"description": "",
+				"operationId": "setUserDigestPassword",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"in": "body",
+					"name": "body",
+					"required": false,
+					"schema": {
+						"type": "string"
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/admin/users": {
+			"get": {
+				"tags": [
+					"adminusers"
+				],
+				"summary": "Get a list of all users with role information.",
+				"description": "",
+				"operationId": "getList",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": [],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"post": {
+				"tags": [
+					"adminusers"
+				],
+				"summary": "Add or update user to database.  Uses user_id field as unique key which determines if user is created or updated.",
+				"description": "",
+				"operationId": "putUser",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"in": "body",
+					"name": "body",
+					"required": false,
+					"schema": {
+						"$ref": "#/definitions/user"
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/admin/users/username:{username}": {
+			"get": {
+				"tags": [
+					"adminusers"
+				],
+				"summary": "Get information and roles for a single user by username.",
+				"description": "",
+				"operationId": "getUser",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "username",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"adminusers"
+				],
+				"summary": "Delete user by username.",
+				"description": "",
+				"operationId": "deleteUser",
+				"parameters": {
+					"name": "username",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/forms/{appId}/{odkClientVersion}": {
+			"post": {
+				"tags": [
+					"forms"
+				],
+				"summary": "Upload a zipped form definition.",
+				"description": "",
+				"operationId": "doPost",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"$ref": "#/definitions/FormUploadResult"
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"summary": "Returns list of applications.  Usually only returns 'default'.",
+				"description": "",
+				"operationId": "getAppNames",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/clientVersions": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getOdkClientVersions",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/manifest/{odkClientVersion}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"summary": "Returns a list of application-level files.",
+				"description": "",
+				"operationId": "getAppLevelFileManifest",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"$ref": "#/definitions/OdkTablesFileManifest"
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/manifest/{odkClientVersion}/{tableId}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"summary": "Returns a the list of files which make up a form definition.",
+				"description": "",
+				"operationId": "getTableIdFileManifest",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"$ref": "#/definitions/OdkTablesFileManifest"
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/files/{odkClientVersion}/{filePath}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getFile",
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"post": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "putFile",
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "deleteFile",
+				"parameters": {
+					"name": "appId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getTables",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "officeId",
+					"in": "query",
+					"required": false,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/attachments/{rowId}/upload": {
+			"post": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "postFiles",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/attachments/{rowId}/file/{filePath}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getFile",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"post": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "putFile",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/attachments/{rowId}/manifest": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getManifest",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getDefinition",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "deleteTable",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/diff": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getRowsSince",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/diff/changeSets": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getChangeSetsSince",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/diff/changeSets/{dataETag}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getChangeSetRows",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/attachments/upload": {
+			"post": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "postFiles",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/attachments/file/{filePath}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getFile",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"post": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "putFile",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/attachments/manifest": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getManifest",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/rows": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"summary": "Get rows representing form instance submission data.",
+				"description": "",
+				"operationId": "getRows",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"$ref": "#/definitions/RowResourceList"
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"put": {
+				"tags": [
+					"odktables"
+				],
+				"summary": "Create, update, or delete rows representing form instance submission data.",
+				"description": "",
+				"operationId": "alterRows",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"$ref": "#/definitions/RowOutcomeList"
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/rows/{rowId}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"summary": "Get a row representing form instance submission data.",
+				"description": "",
+				"operationId": "getRow",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"$ref": "#/definitions/Row"
+						}
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/query/lastUpdateDate": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getRowsInTimeRangeBasedOnLastUpdateDate",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/ref/{schemaETag}/query/savepointTimestamp": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getRowsInTimeRangeBasedOnSavepointTimestamp",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/acl": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getAcls",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/acl/user": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getUserAcls",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/acl/group": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getGroupAcls",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/acl/user/{userId}": {
+			"put": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "setUserAcl",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "deleteUserAcl",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/acl/group/{groupId}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getGroupAcl",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"put": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "setGroupAcl",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "deleteGroupAcl",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/acl/default": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getDefaultAcl",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"put": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "setDefaultAcl",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "deleteDefaultAcl",
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getTable",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"put": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "createTable",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/odktables/{appId}/tables/{tableId}/properties/{odkClientVersion}": {
+			"get": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "getTableProperties",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"put": {
+				"tags": [
+					"odktables"
+				],
+				"operationId": "putJsonTableProperties",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "tableId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/offices": {
+			"get": {
+				"tags": [
+					"offices"
+				],
+				"summary": "Get list of all offices.",
+				"description": "",
+				"operationId": "getList",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": [],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"post": {
+				"tags": [
+					"offices"
+				],
+				"summary": "Add or update office to database.  Uses officeId field as unique key which determines if office is created or updated.",
+				"description": "",
+				"operationId": "putOffice",
+				"consumes": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"in": "body",
+					"name": "body",
+					"required": false,
+					"schema": {
+						"$ref": "#/definitions/RegionalOffice"
+					}
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/offices/{officeId}": {
+			"get": {
+				"tags": [
+					"offices"
+				],
+				"summary": "Get information about a particular office.",
+				"description": "",
+				"operationId": "getOffice",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": {
+					"name": "officeId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			},
+			"delete": {
+				"tags": [
+					"offices"
+				],
+				"summary": "Delete office.",
+				"description": "",
+				"operationId": "deleteOffice",
+				"parameters": {
+					"name": "officeId",
+					"in": "path",
+					"required": true,
+					"type": "string"
+				},
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/roles/granted": {
+			"get": {
+				"tags": [
+					"roles"
+				],
+				"operationId": "getGranted",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": [],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		},
+		"/users/list": {
+			"get": {
+				"tags": [
+					"users"
+				],
+				"summary": "This endpoint is backwards-compatible with ODK Aggregate/Survey sync.  With admin privileges, this call retrieves user information for all users.  Without admin privileges, this retrieves user information for the current user.",
+				"description": "",
+				"operationId": "getList",
+				"produces": [
+					"application/json",
+					"text/xml;charset=UTF-8",
+					"application/xml;charset=UTF-8"
+				],
+				"parameters": [],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": {
+					"basicAuth": []
+				}
+			}
+		}
+	},
+	"securityDefinitions": {
+		"basicAuth": {
+			"type": "basic"
+		}
+	},
+	"definitions": {
+		"user": {
+			"type": "object",
+			"properties": {
+				"roles": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"officeId": {
+					"type": "string"
+				},
+				"user_id": {
+					"type": "string"
+				},
+				"full_name": {
+					"type": "string"
+				}
+			}
+		},
+		"FormUploadResult": {
+			"type": "object",
+			"properties": {
+				"notProcessedFiles": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"manifest": {
+					"$ref": "#/definitions/OdkTablesFileManifest"
+				}
+			}
+		},
+		"OdkTablesFileManifest": {
+			"type": "object",
+			"properties": {
+				"files": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/OdkTablesFileManifestEntry"
+					}
+				}
+			}
+		},
+		"OdkTablesFileManifestEntry": {
+			"type": "object",
+			"properties": {
+				"filename": {
+					"type": "string"
+				},
+				"contentLength": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"contentType": {
+					"type": "string"
+				},
+				"md5hash": {
+					"type": "string"
+				},
+				"downloadUrl": {
+					"type": "string"
+				}
+			}
+		},
+		"BodyPart": {
+			"type": "object",
+			"properties": {
+				"contentDisposition": {
+					"$ref": "#/definitions/ContentDisposition"
+				},
+				"entity": {
+					"type": "object"
+				},
+				"headers": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"mediaType": {
+					"$ref": "#/definitions/MediaType"
+				},
+				"messageBodyWorkers": {
+					"$ref": "#/definitions/MessageBodyWorkers"
+				},
+				"parent": {
+					"$ref": "#/definitions/MultiPart"
+				},
+				"providers": {
+					"$ref": "#/definitions/Providers"
+				},
+				"parameterizedHeaders": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/ParameterizedHeader"
+						}
+					}
+				}
+			}
+		},
+		"ContentDisposition": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string"
+				},
+				"parameters": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"fileName": {
+					"type": "string"
+				},
+				"creationDate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modificationDate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"readDate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"size": {
+					"type": "integer",
+					"format": "int64"
+				}
+			}
+		},
+		"MediaType": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string"
+				},
+				"subtype": {
+					"type": "string"
+				},
+				"parameters": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"wildcardType": {
+					"type": "boolean"
+				},
+				"wildcardSubtype": {
+					"type": "boolean"
+				}
+			}
+		},
+		"MessageBodyWorkers": {
+			"type": "object"
+		},
+		"MultiPart": {
+			"type": "object",
+			"properties": {
+				"contentDisposition": {
+					"$ref": "#/definitions/ContentDisposition"
+				},
+				"entity": {
+					"type": "object"
+				},
+				"headers": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"mediaType": {
+					"$ref": "#/definitions/MediaType"
+				},
+				"messageBodyWorkers": {
+					"$ref": "#/definitions/MessageBodyWorkers"
+				},
+				"parent": {
+					"$ref": "#/definitions/MultiPart"
+				},
+				"providers": {
+					"$ref": "#/definitions/Providers"
+				},
+				"bodyParts": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/BodyPart"
+					}
+				},
+				"parameterizedHeaders": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/ParameterizedHeader"
+						}
+					}
+				}
+			}
+		},
+		"ParameterizedHeader": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"type": "string"
+				},
+				"parameters": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"Providers": {
+			"type": "object"
+		},
+		"DataKeyValue": {
+			"type": "object",
+			"properties": {
+				"column": {
+					"type": "string"
+				},
+				"value": {
+					"type": "string"
+				}
+			}
+		},
+		"RowFilterScope": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": [
+						"DEFAULT",
+						"MODIFY",
+						"READ_ONLY",
+						"HIDDEN"
+					]
+				},
+				"value": {
+					"type": "string"
+				}
+			}
+		},
+		"RowResource": {
+			"type": "object",
+			"properties": {
+				"rowETag": {
+					"type": "string"
+				},
+				"dataETagAtModification": {
+					"type": "string"
+				},
+				"deleted": {
+					"type": "boolean"
+				},
+				"createUser": {
+					"type": "string"
+				},
+				"lastUpdateUser": {
+					"type": "string"
+				},
+				"formId": {
+					"type": "string"
+				},
+				"locale": {
+					"type": "string"
+				},
+				"savepointType": {
+					"type": "string"
+				},
+				"savepointTimestamp": {
+					"type": "string"
+				},
+				"savepointCreator": {
+					"type": "string"
+				},
+				"orderedColumns": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/DataKeyValue"
+					}
+				},
+				"selfUri": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				},
+				"filterScope": {
+					"$ref": "#/definitions/RowFilterScope"
+				}
+			}
+		},
+		"RowResourceList": {
+			"type": "object",
+			"properties": {
+				"rows": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/RowResource"
+					}
+				},
+				"dataETag": {
+					"type": "string"
+				},
+				"tableUri": {
+					"type": "string"
+				},
+				"webSafeRefetchCursor": {
+					"type": "string"
+				},
+				"webSafeBackwardCursor": {
+					"type": "string"
+				},
+				"webSafeResumeCursor": {
+					"type": "string"
+				},
+				"hasMoreResults": {
+					"type": "boolean"
+				},
+				"hasPriorResults": {
+					"type": "boolean"
+				}
+			}
+		},
+		"RowOutcome": {
+			"type": "object",
+			"properties": {
+				"rowETag": {
+					"type": "string"
+				},
+				"dataETagAtModification": {
+					"type": "string"
+				},
+				"deleted": {
+					"type": "boolean"
+				},
+				"createUser": {
+					"type": "string"
+				},
+				"lastUpdateUser": {
+					"type": "string"
+				},
+				"formId": {
+					"type": "string"
+				},
+				"locale": {
+					"type": "string"
+				},
+				"savepointType": {
+					"type": "string"
+				},
+				"savepointTimestamp": {
+					"type": "string"
+				},
+				"savepointCreator": {
+					"type": "string"
+				},
+				"orderedColumns": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/DataKeyValue"
+					}
+				},
+				"selfUri": {
+					"type": "string"
+				},
+				"outcome": {
+					"type": "string",
+					"enum": [
+						"UNKNOWN",
+						"SUCCESS",
+						"DENIED",
+						"IN_CONFLICT",
+						"FAILED"
+					]
+				},
+				"id": {
+					"type": "string"
+				},
+				"filterScope": {
+					"$ref": "#/definitions/RowFilterScope"
+				}
+			}
+		},
+		"RowOutcomeList": {
+			"type": "object",
+			"properties": {
+				"tableUri": {
+					"type": "string"
+				},
+				"rows": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/RowOutcome"
+					}
+				},
+				"dataETag": {
+					"type": "string"
+				}
+			}
+		},
+		"Row": {
+			"type": "object",
+			"properties": {
+				"rowETag": {
+					"type": "string"
+				},
+				"dataETagAtModification": {
+					"type": "string"
+				},
+				"deleted": {
+					"type": "boolean"
+				},
+				"createUser": {
+					"type": "string"
+				},
+				"lastUpdateUser": {
+					"type": "string"
+				},
+				"formId": {
+					"type": "string"
+				},
+				"locale": {
+					"type": "string"
+				},
+				"savepointType": {
+					"type": "string"
+				},
+				"savepointTimestamp": {
+					"type": "string"
+				},
+				"savepointCreator": {
+					"type": "string"
+				},
+				"orderedColumns": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/DataKeyValue"
+					}
+				},
+				"id": {
+					"type": "string"
+				},
+				"filterScope": {
+					"$ref": "#/definitions/RowFilterScope"
+				}
+			}
+		},
+		"RowList": {
+			"type": "object",
+			"properties": {
+				"rows": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Row"
+					}
+				},
+				"dataETag": {
+					"type": "string"
+				},
+				"deviceId": {
+					"type": "string"
+				},
+				"officeId": {
+					"type": "string"
+				}
+			}
+		},
+		"Scope": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": [
+						"DEFAULT",
+						"USER",
+						"GROUP"
+					]
+				},
+				"value": {
+					"type": "string"
+				}
+			}
+		},
+		"TableAcl": {
+			"type": "object",
+			"properties": {
+				"scope": {
+					"$ref": "#/definitions/Scope"
+				},
+				"role": {
+					"type": "string",
+					"enum": [
+						"NONE",
+						"FILTERED_READER",
+						"FILTERED_WRITER",
+						"UNFILTERED_READER_FILTERED_WRITER",
+						"READER",
+						"WRITER",
+						"OWNER"
+					]
+				}
+			}
+		},
+		"Column": {
+			"type": "object",
+			"properties": {
+				"elementKey": {
+					"type": "string"
+				},
+				"elementName": {
+					"type": "string",
+					"readOnly": true
+				},
+				"elementType": {
+					"type": "string"
+				},
+				"listChildElementKeys": {
+					"type": "string",
+					"readOnly": true
+				}
+			}
+		},
+		"TableDefinition": {
+			"type": "object",
+			"properties": {
+				"schemaETag": {
+					"type": "string"
+				},
+				"tableId": {
+					"type": "string"
+				},
+				"orderedColumns": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Column"
+					}
+				}
+			}
+		},
+		"PropertyEntryXml": {
+			"type": "object",
+			"required": [
+				"aspect",
+				"key",
+				"partition",
+				"type"
+			],
+			"properties": {
+				"partition": {
+					"type": "string"
+				},
+				"aspect": {
+					"type": "string"
+				},
+				"key": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string"
+				},
+				"value": {
+					"type": "string"
+				}
+			}
+		},
+		"PropertyEntryXmlList": {
+			"type": "object",
+			"required": [
+				"properties"
+			],
+			"properties": {
+				"properties": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PropertyEntryXml"
+					}
+				}
+			}
+		},
+		"RegionalOffice": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"officeId": {
+					"type": "string"
+				},
+				"uri": {
+					"type": "string",
+					"readOnly": true
+				}
+			}
+		}
+	}
+}
